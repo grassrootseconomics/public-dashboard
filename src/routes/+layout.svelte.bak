@@ -1,0 +1,193 @@
+<script context="module">
+
+  import { beforeNavigate, afterNavigate } from '$app/navigation';
+
+  
+  import RootNavItem from '$lib/Components/StatefulNavComponents/RootNavItem.svelte';
+  import { addIDValues } from "$lib/treeUtil.js";
+ 
+</script>
+
+<script>
+  let menuSpec_tree = 
+      [
+        { 
+          "url"               : "/",
+          "displayName"       : "Home",
+          "displayIcon"       : null,
+        },
+        { "url"               : "#",
+          "displayName"       : "Blockchain",
+          "displayIcon"       : null,
+          
+          "type"              : "dropdown",
+          "parentURLFragment" : "/blockchain",
+          "dropdownContent"   :
+          [ 
+            { "url"               : "/viewTxns",
+              "displayName"       : "View Txns",
+              "displayIcon"       : null,
+            }
+          ]
+        },
+        { "url"               : "#",
+          "displayName"       : "Tokens",
+          "displayIcon"       : null,
+
+          "type"              : "dropdown",
+          "parentURLFragment" : "/tokens",
+          "dropdownContent"   :
+          [
+            { "url"               : "/viewTokens",
+              "displayName"       : "View CIC Tokens",
+              "displayIcon"       : null,
+            }
+          ]
+        },
+        { 
+          "url"               : "/testReactivity",
+          "displayName"       : "Test Reactivity",
+          "displayIcon"       : null,
+        },
+      ];
+
+  let mainMenuTreeContext = 
+      { uniqueTreeID            : "mainMenuContentTree", 
+        recursionFieldName_list : ["dropdownContent"]
+      }
+  addIDValues(menuSpec_tree, mainMenuTreeContext);
+
+  let markActiveItem = 
+      (event) =>
+      { 
+        // debugger;
+        let activeItemID = event.target.getAttribute("data-navmenuid");
+        // let activeItem = mainMenuTreeContext.getTreeItemByID(activeItemID);
+        // if (activeItem.dropDownContent === undefined)
+        // { 
+        // let listOfObjectsToUpdate = 
+        mainMenuTreeContext.markTreeItemActive(activeItemID);
+        // }
+
+        // debugger;
+        // for (let updateThisItem of listOfObjectsToUpdate)
+        // { updateThisItem[mainMenuTreeContext.uniqueTreeID] = updateThisItem[mainMenuTreeContext.uniqueTreeID];
+        // }
+
+        menuSpec_tree = menuSpec_tree;
+
+        // menuSpec_tree[0].mainMenuContentTree = menuSpec_tree[0].mainMenuContentTree;
+      }
+  
+      mainMenuTreeContext.markTreeItemActive(0);
+
+  let parentMenuItem;
+
+  console.log(menuSpec_tree);
+
+  afterNavigate
+      ( () =>
+        { 
+          // menuSpec_tree = menuSpec_tree;
+        }
+      );
+
+  // beforeNavigate
+  //     ( (navigate) =>
+  //       { 
+  //       }
+  //     )
+
+
+ 
+
+</script>
+
+<!-- <pre> {$activeItemID} </pre> -->
+<!-- <pre> {JSON.stringify(mst)} </pre> -->
+<nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/">
+      <img src="/graphics/ge-logo-175x38.png" alt="Grassroots Economics" width="175">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+          
+          {#each menuSpec_tree as menuItem (menuItem.mainMenuContentTree.id)}
+            
+
+            {#if menuItem.type === undefined}
+              <RootNavItem {menuItem} {markActiveItem} > </RootNavItem>
+              <!-- <li class="nav-item">
+                  <a  bind:this={menuItem.mainMenuContentTree.domElement} 
+                      class="nav-link" 
+                      class:active={menuItem.mainMenuContentTree.active === true} 
+                      
+                      data-navmenuid={menuItem.mainMenuContentTree.id}
+                      
+                      href="{menuItem.url}"
+
+                      on:click={markActiveItem}
+                      >
+                    {menuItem.displayName}
+                    
+                  </a>
+              </li> -->
+            {:else if menuItem.type === "dropdown"}
+              <li class="nav-item dropdown">
+                <!-- {#key menuItem.mainMenuContentTree.active} -->
+                  <a  
+                      href="{menuItem.url}" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                  
+                      class="nav-link dropdown-toggle"
+
+                      data-navmenuid={menuItem.mainMenuContentTree.id}
+                      class:active={menuItem.mainMenuContentTree.partiallyActive === true}
+                      
+                      bind:this={menuItem.mainMenuContentTree.domElement}
+                      >
+                      {menuItem.displayName}
+                  </a>
+                <!-- {/key} -->
+                <ul class="dropdown-menu dropdown-menu-end">
+                  {#each menuItem.dropdownContent as subMenuItem (subMenuItem.mainMenuContentTree.id) }
+                    <li data-bs-dismiss="offcanvas">
+                      {#if subMenuItem.divider === true}
+                        <hr class="dropdown-divider" data-navmenuid={subMenuItem.id}>
+                      {:else}
+                        <a  
+                            href="{menuItem.parentURLFragment+subMenuItem.url}"
+
+                            bind:this={subMenuItem.mainMenuContentTree.domElement} 
+                            class="dropdown-item" 
+                            
+                            data-navmenuid={subMenuItem.mainMenuContentTree.id}
+                            data-navmenuparentid={subMenuItem.mainMenuContentTree.parent_id}
+                            class:active={subMenuItem.mainMenuContentTree.active === true} 
+                            on:click={markActiveItem}
+                            >
+                          {subMenuItem.displayName}
+                        </a>
+                      {/if}
+                    </li>
+                  {/each}
+                </ul>
+              </li>
+            {/if}
+            
+          {/each}
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<slot></slot>

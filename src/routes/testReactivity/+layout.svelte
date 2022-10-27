@@ -1,4 +1,16 @@
 <script>
+  import {
+  afterNavigate,
+  beforeNavigate,
+  disableScrollHandling,
+  goto,
+  invalidate,
+  invalidateAll,
+  prefetch,
+  prefetchRoutes
+} from '$app/navigation';
+
+import {updateList} from '$lib/treeUtil.js'
 
   let list = 
       [ { name: "Hello",
@@ -23,8 +35,16 @@
 
   let addToList = 
       function()
-      { list[0].children.push(Math.floor(Math.random() * 10));
-        list[0].children = list[0].children;
+      { 
+        // list[0].children.push(Math.floor(Math.random() * 10));
+        // list[0].children = list[0].children;
+
+          let val = updateList(list);
+
+          list[0].children = list[0].children;
+
+
+        goto("/testReactivity/subTest");
       }
 
 </script>
@@ -45,4 +65,3 @@
 <button on:click={changeName}>Change Name</button>
 
 <button on:click={addToList}>Add To List</button>
-
