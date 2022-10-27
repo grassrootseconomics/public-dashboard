@@ -21,6 +21,11 @@
           class="dropdown-item"
           class:active={menuItem.mainMenuContentTree.active === true}
           
+          aria=""
+          aria-labelledby="mainNavigationDropdown_{menuItem.mainMenuContentTree.uniqueID}"
+          aria-current={menuItem.mainMenuContentTree.active ? "page":null}
+          
+          
           navTreeContextManagement=""
           data-navmenuid={menuItem.mainMenuContentTree.id}
           data-navmenuparentid={menuItem.mainMenuContentTree.parent_id}

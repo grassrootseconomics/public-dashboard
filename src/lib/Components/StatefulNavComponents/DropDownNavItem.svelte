@@ -11,11 +11,19 @@
   <li class="nav-item dropdown">
     <!-- {#key menuItem.mainMenuContentTree.active} -->
       <a  
-          href="{menuItem.url}" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+          id="mainNavigationDropdown_{menuItem.mainMenuContentTree.uniqueID}"
+          
+          href="{menuItem.url}"  
       
           bootstrap=""
           class="nav-link dropdown-toggle"
           class:active={menuItem.mainMenuContentTree.partiallyActive === true}
+          data-bs-toggle="dropdown"
+
+          aria=""
+          role="button"
+          aria-haspopup="true" 
+          aria-expanded="false"
 
           navTreeContextManagement=""
           data-navmenuid={menuItem.mainMenuContentTree.id}

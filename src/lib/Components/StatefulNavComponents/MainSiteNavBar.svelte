@@ -112,17 +112,24 @@ let menuSpec_tree =
         which allows complex logic over any kind of markup, bootstrap or otherwise
       Nesting logic within components binds the components to the logic. The goal of this tooling is to avoid that.
 -->
-<nav class="navbar navbar-expand-lg bg-light">
+<nav role="navigation" class="navbar navbar-expand-lg bg-light" aria-label="main navigation">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">
+    <a role="banner" class="navbar-brand" href="/" aria-label="Site Logo">
       <img src="/graphics/ge-logo-175x38.png" alt="Grassroots Economics" width="175">
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+    <button 
+        class="navbar-toggler" type="button" 
+        data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" 
+        
+        aria-controls="offcanvasNavbar" 
+        aria-expanded="false" 
+        aria-label="Toggle navigation"
+        >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Site Navigation</h5>
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">

@@ -16,7 +16,8 @@
     
         bootstrap=""
         class="nav-link" 
-        class:active={menuItem.mainMenuContentTree.active === true} 
+        class:active={menuItem.mainMenuContentTree.active === true}
+        aria-current={menuItem.mainMenuContentTree.active ? "page":null}
 
         navTreeContextManagement=""
         data-navmenuid={menuItem.mainMenuContentTree.id}
