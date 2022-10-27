@@ -82,9 +82,10 @@ let menuSpec_tree =
       }
   
   // this needs to be changed to be reactive to URL which is loaded when the layout is first active
-  mainMenuTreeContext.markTreeItemActive(0);
+  // mainMenuTreeContext.markTreeItemActive(0);
 
   console.log(menuSpec_tree);
+  console.log(mainMenuTreeContext);
   console.log($page.url)
 
 </script>
@@ -93,7 +94,7 @@ let menuSpec_tree =
         which allows complex logic over any kind of markup, bootstrap or otherwise
       Nesting logic within components binds the components to the logic. The goal of this tooling is to avoid that.
 -->
-<nav class="navbar navbar-expand-lg bg-light">
+<!-- <nav class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
       <img src="/graphics/ge-logo-175x38.png" alt="Grassroots Economics" width="175">
@@ -123,5 +124,5 @@ let menuSpec_tree =
       </div>
     </div>
   </div>
-</nav>
+</nav> -->
 

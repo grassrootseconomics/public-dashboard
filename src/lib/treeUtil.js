@@ -1,12 +1,13 @@
 // import { writable } from 'svelte/store';
 
+// ALL IN ALL I RECKON WE CAN USE IT "UPSIDE DOWN" ACTUALLY
+
 export function addIDValues(treeStructure, context = {})
   { 
     debugger;
     
     let returnObject = { success: false, warnings: []};
 
-    debugger;
     // check required values
     if (context.uniqueTreeID            === undefined)  throw new Error("context must include a uniqueTreeID");
     if (!Array.isArray(treeStructure))                  throw new Error("treeStructure must contain an array at the root");
@@ -37,9 +38,12 @@ export function addIDValues(treeStructure, context = {})
 
     context.currentAddress = [];
 
-    addIDValues_helper(treeStructure, context);
+    let newTree = context.treeRoot = [];
+
+    addIDValues_helper(treeStructure, context, newTree);
   }
-function addIDValues_helper(treeStructure, context)
+
+function addIDValues_helper(treeStructure, context, newTree)
   {
     debugger;
     
@@ -53,30 +57,32 @@ function addIDValues_helper(treeStructure, context)
     else
     { for (let [index, treeItem] of Object.entries(treeStructure))
       { 
+        // iterative values walking through tree
         let uniqueID = context.uniqueID++;
-
         let newItemAddress = [...currentAddress, [index, uniqueID] ];
         
-        // let newTreeContextItem = { "data": treeItem };
+
+        let newTreeContextItem = { "data": treeItem };
+        newTreeContextItem.id                       = uniqueID;
+        newTreeContextItem.parentID                 = parentID;
+        newTreeContextItem.address                  = newItemAddress
+
+        newTree.push(newTreeContextItem);
         
-        if (treeItem[context.uniqueTreeID] === undefined) treeItem[context.uniqueTreeID] = {};
-        
-        let treeItemExtraData                     = treeItem[context.uniqueTreeID];
-        treeItemExtraData.address = newItemAddress
+        // maintain dict of items by uniqueID
+        context.treeStructureAsListByID[uniqueID]   = newTreeContextItem;
 
-
-        treeItemExtraData.id                      = uniqueID;
-        treeItemExtraData.parentID                = parentID;
-        context.treeStructureAsListByID[uniqueID] = treeItem;
-
-        for (let treeItemKey of Object.keys(treeItem))
+        // recurse into children
+        for (let treeItemKey of Object.keys(newTreeContextItem.data))
         { if (context.recursionFieldName_list.includes(treeItemKey))
           { 
+            // recursion base values
             context.parentID = uniqueID;
+            context.currentAddress = [...newItemAddress, [treeItemKey, null] ];
 
-            context.currentAddress = [...newItemAddress, treeItemKey];
+            newTreeContextItem[treeItemKey] = [];
 
-            addIDValues_helper(treeItem[treeItemKey], context);
+            addIDValues_helper(treeItem[treeItemKey], context, newTreeContextItem[treeItemKey]);
           }
         }
       }
