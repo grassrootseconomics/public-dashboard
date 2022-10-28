@@ -105,12 +105,12 @@ let menuSpec_tree =
           //   svelte component it is almost instant
 
 
-          let mainNavigationNavBar        = document.getElementById("mainNavigationNavBar");
-          mainNavigationNavBar.addEventListener
+          let mainNavigationContent        = document.getElementById("mainNavigationContent");
+          mainNavigationContent.addEventListener
               ( "shown.bs.offcanvas",
                 () =>
                 { 
-                  setTimeout(()=>mainNavigationNavBar.querySelector(`a[class~="nav-link"]`).focus({focusVisible: true}), 10);
+                  setTimeout(()=>mainNavigationContent.querySelector(`a[class~="nav-link"]`).focus({focusVisible: true}), 10);
                 }
               );
 
@@ -123,44 +123,46 @@ let menuSpec_tree =
         which allows complex logic over any kind of markup, bootstrap or otherwise
       Nesting logic within components binds the components to the logic. The goal of this tooling is to avoid that.
 -->
-<nav role="navigation" class="navbar navbar-expand-lg bg-light" aria-label="main navigation">
+<div class="navbar navbar-expand-lg bg-light">
   <div class="container-fluid">
-    <span role="banner">
-      <a class="navbar-brand" href="/" aria-label="Site Logo">
+    <span role="banner" aria-label="Grassroots Economics Logo">
+      <a class="navbar-brand" href="/" aria-label="Link to homepage">
         <img src="/graphics/ge-logo-175x38.png" alt="Grassroots Economics Logo" width="175">
       </a>
     </span>
-    <button 
-        class="navbar-toggler" type="button" 
-        data-bs-toggle="offcanvas" data-bs-target="#mainNavigationNavBar" 
-        
-        aria-controls="mainNavigationNavBar" 
-        aria-expanded="false" 
-        aria-label="Navigation Toggle Open"
-        >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="mainNavigationNavBar" aria-labelledby="mainNavigationNavbarLabel">
-      <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="mainNavigationNavbarLabel">Site Navigation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Navigation Toggle Close"></button>
+    <nav role="navigation" aria-labelledBy="mainNavigationContentLabel">
+      <button 
+          class="navbar-toggler" type="button" 
+          data-bs-toggle="offcanvas" data-bs-target="#mainNavigationContent" 
+          
+          aria-controls="mainNavigationContent" 
+          aria-expanded="false" 
+          aria-label="Navigation Toggle Open"
+          >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="mainNavigationContent">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="mainNavigationContentLabel">Site Navigation</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Navigation Toggle Close"></button>
+        </div>
+        <div class="offcanvas-body">
+          <ul id="mainSiteNavBarRootULElement" class="navbar-nav justify-content-end flex-grow-1 pe-3">
+            {#each menuSpec_tree as menuItem (menuItem.mainMenuContentTree.id)}
+              {#if menuItem.type === undefined}
+                <RootNavItem {menuItem} {markActiveItem} />
+              {:else if menuItem.type === "dropdown"}
+                <DropDownNavItem {menuItem}>
+                  {#each menuItem.dropdownContent as subMenuItem (subMenuItem.mainMenuContentTree.id) }
+                    <DropDownNavItem_child parentMenuItem={menuItem} menuItem={subMenuItem} {markActiveItem}></DropDownNavItem_child>
+                  {/each}
+                </DropDownNavItem>
+              {/if}
+            {/each}
+          </ul>
+        </div>
       </div>
-      <div class="offcanvas-body">
-        <ul id="mainSiteNavBarRootULElement" class="navbar-nav justify-content-end flex-grow-1 pe-3">
-          {#each menuSpec_tree as menuItem (menuItem.mainMenuContentTree.id)}
-            {#if menuItem.type === undefined}
-              <RootNavItem {menuItem} {markActiveItem} />
-            {:else if menuItem.type === "dropdown"}
-              <DropDownNavItem {menuItem}>
-                {#each menuItem.dropdownContent as subMenuItem (subMenuItem.mainMenuContentTree.id) }
-                  <DropDownNavItem_child parentMenuItem={menuItem} menuItem={subMenuItem} {markActiveItem}></DropDownNavItem_child>
-                {/each}
-              </DropDownNavItem>
-            {/if}
-          {/each}
-        </ul>
-      </div>
-    </div>
+    </nav>
   </div>
-</nav>
+</div>
 
