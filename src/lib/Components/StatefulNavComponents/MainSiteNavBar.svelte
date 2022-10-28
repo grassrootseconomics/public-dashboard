@@ -105,15 +105,14 @@ let menuSpec_tree =
           //   svelte component it is almost instant
 
 
-          // let mainNavigationNavBar        = document.getElementById("mainNavigationNavBar");
-          // mainNavigationNavBar.addEventListener
-          //     ( "shown.bs.modal",
-          //       () =>
-          //       { 
-          //         // mainNavigationNavBar
-          //         alert("woop");
-          //       }
-          //     );
+          let mainNavigationNavBar        = document.getElementById("mainNavigationNavBar");
+          mainNavigationNavBar.addEventListener
+              ( "shown.bs.offcanvas",
+                () =>
+                { 
+                  setTimeout(()=>mainNavigationNavBar.querySelector(`a[class~="nav-link"]`).focus({focusVisible: true}), 10);
+                }
+              );
 
         }
       );
