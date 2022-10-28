@@ -123,7 +123,7 @@ let menuSpec_tree =
         which allows complex logic over any kind of markup, bootstrap or otherwise
       Nesting logic within components binds the components to the logic. The goal of this tooling is to avoid that.
 -->
-<div class="navbar navbar-expand-lg bg-light">
+<div class="navbar navbar-expand-md bg-light">
   <div class="container-fluid">
     <span role="banner" aria-label="Grassroots Economics Logo">
       <a class="navbar-brand" href="/" aria-label="Link to homepage">
