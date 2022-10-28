@@ -10,13 +10,13 @@
   
   <li class="nav-item dropdown">
     <!-- {#key menuItem.mainMenuContentTree.active} -->
-      <a  
-          id="mainNavigationDropdown_{menuItem.mainMenuContentTree.uniqueID}"
+      <button  
+          id="mainNavigationDropdown_{menuItem.mainMenuContentTree.id}"
           
           href="{menuItem.url}"  
       
           bootstrap=""
-          class="nav-link dropdown-toggle"
+          class="btn btn-link nav-link dropdown-toggle"
           class:active={menuItem.mainMenuContentTree.partiallyActive === true}
           data-bs-toggle="dropdown"
 
@@ -32,7 +32,7 @@
           bind:this={menuItem.mainMenuContentTree.domElement} 
           >
           {menuItem.displayName}
-      </a>
+      </button>
     <!-- {/key} -->
     <ul class="dropdown-menu dropdown-menu-end">
       <slot></slot>

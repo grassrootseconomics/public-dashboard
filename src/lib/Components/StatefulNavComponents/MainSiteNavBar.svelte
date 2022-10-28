@@ -97,12 +97,24 @@ let menuSpec_tree =
         {
           // look for the first link that matches the current URL
           let mainSiteNavBarRootULElement = document.getElementById("mainSiteNavBarRootULElement");
-          let currentMenuItem = mainSiteNavBarRootULElement.querySelector(`[href="${$page.url.pathname}"]`);
+          let currentMenuItem             = mainSiteNavBarRootULElement.querySelector(`[href="${$page.url.pathname}"]`);
           // mark that navTreeContext item as active
           mainMenuTreeContext.markTreeItemActive(currentMenuItem.getAttribute("data-navmenuid"));
 
           // note - this appears to "take some time" in dev mode, when actually running as a built
           //   svelte component it is almost instant
+
+
+          // let mainNavigationNavBar        = document.getElementById("mainNavigationNavBar");
+          // mainNavigationNavBar.addEventListener
+          //     ( "shown.bs.modal",
+          //       () =>
+          //       { 
+          //         // mainNavigationNavBar
+          //         alert("woop");
+          //       }
+          //     );
+
         }
       );
 
@@ -114,23 +126,25 @@ let menuSpec_tree =
 -->
 <nav role="navigation" class="navbar navbar-expand-lg bg-light" aria-label="main navigation">
   <div class="container-fluid">
-    <a role="banner" class="navbar-brand" href="/" aria-label="Site Logo">
-      <img src="/graphics/ge-logo-175x38.png" alt="Grassroots Economics" width="175">
-    </a>
+    <span role="banner">
+      <a class="navbar-brand" href="/" aria-label="Site Logo">
+        <img src="/graphics/ge-logo-175x38.png" alt="Grassroots Economics Logo" width="175">
+      </a>
+    </span>
     <button 
         class="navbar-toggler" type="button" 
-        data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" 
+        data-bs-toggle="offcanvas" data-bs-target="#mainNavigationNavBar" 
         
-        aria-controls="offcanvasNavbar" 
+        aria-controls="mainNavigationNavBar" 
         aria-expanded="false" 
-        aria-label="Toggle navigation"
+        aria-label="Navigation Toggle Open"
         >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="mainNavigationNavBar" aria-labelledby="mainNavigationNavbarLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Site Navigation</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <h5 class="offcanvas-title" id="mainNavigationNavbarLabel">Site Navigation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Navigation Toggle Close"></button>
       </div>
       <div class="offcanvas-body">
         <ul id="mainSiteNavBarRootULElement" class="navbar-nav justify-content-end flex-grow-1 pe-3">

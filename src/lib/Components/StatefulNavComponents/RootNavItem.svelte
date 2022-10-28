@@ -6,6 +6,8 @@
   //   function to call to mark this item active in the navContextTree
   export let markActiveItem;
 
+  export let autofocus = null;
+
 </script>
 
 

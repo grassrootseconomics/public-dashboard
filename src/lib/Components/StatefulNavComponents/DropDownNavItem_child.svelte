@@ -22,7 +22,7 @@
           class:active={menuItem.mainMenuContentTree.active === true}
           
           aria=""
-          aria-labelledby="mainNavigationDropdown_{menuItem.mainMenuContentTree.uniqueID}"
+          aria-labelledby="mainNavigationDropdown_{menuItem.mainMenuContentTree.id}"
           aria-current={menuItem.mainMenuContentTree.active ? "page":null}
           
           
