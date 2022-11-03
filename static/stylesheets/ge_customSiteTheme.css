@@ -1,3 +1,7 @@
+:root {
+  --bs-body-bg: #ededed;
+ }
+
 body {
   font-family: 'Raleway', sans-serif;  
 }
