@@ -122,7 +122,7 @@ let dataContent =
   onMount 
       ( () =>
         {
-          vegaEmbed('#vegaChart_traders', yourVlSpec, {renderer: "svg"});
+          vegaEmbed('#vegaChart_traders', yourVlSpec, {renderer: "svg", actions: false});
         }
       )
       
