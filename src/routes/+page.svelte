@@ -4,7 +4,8 @@
 
     <h5 class="homePageMainH5">The Grassroots Economics Blockchain Explorer</h5>
 
-    <form action="search" method="POST">
+    <!-- removed the search bar -->
+    <!-- <form action="search" method="POST">
       <div class="searchInputGroup input-group input-group-lg">
         <button class="searchFilterButton btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">filters</button>
         <ul class="dropdown-menu">
@@ -17,7 +18,7 @@
         <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
         <button class="btn btn-primary" type="button" id="button-addon2"><iconify-icon class="searchIcon" inline height="1.5em" icon="material-symbols:search"></iconify-icon></button>
       </div>
-    </form>
+    </form> -->
     
   </div>
   
