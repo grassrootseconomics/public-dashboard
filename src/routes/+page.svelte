@@ -2,6 +2,8 @@
 
 import SummaryStatisticsCard from '../lib/Components/StatisticsComponents/SummaryStatisticsCard.svelte';
 
+import {onMount} from 'svelte';
+
 </script>
 
 <script>
@@ -57,6 +59,75 @@ let dataContent =
       ]
     }
   }
+
+  let tradersPerDay_list = [];
+
+  let daysToCreate  = 45;
+  let maxValue      = 400;
+  let currentMax    = maxValue / 2;
+  let minimum       = 0;
+
+  var now = new Date();
+  for (let i=0; i<daysToCreate; i++)
+  { let newDate = new Date(now);
+    newDate.setDate(newDate.getDate() + 1);
+    tradersPerDay_list.push
+        ( {
+            "date": newDate,
+            "count": (Math.random() * (maxValue / 2)) + minimum,
+          }
+        );
+    now = newDate;
+    minimum = ((i / daysToCreate) * maxValue) / 2
+
+  }
+
+  let yourVlSpec = {
+        $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+        description: 'A simple line chart with embedded data.',
+
+        actions: false,
+        
+        width: "container",
+        padding: 0,
+
+        data: {
+          values: tradersPerDay_list
+        },
+
+        mark: { type: 'line', point: true },
+        encoding: {
+          x:  { field: 'date', 
+                type: 'temporal', 
+
+                title: null,
+
+                // "scale": 
+                // { "domain": [{"day": 1}, {"day": 7}]
+                // }
+                // scale: {nice: "week"},
+              },
+          y:  { field: 'count', 
+                type: 'quantitative',
+                
+                title: null,
+              }
+        },
+
+        config:
+        { font: "Raleway, sans-serif",
+        }
+      };
+
+  onMount 
+      ( () =>
+        {
+          vegaEmbed('#vegaChart_traders', yourVlSpec, {renderer: "svg"});
+        }
+      )
+      
+
+  console.log(JSON.stringify(dataContent, null, 2));
 </script>
 
 <div class="pageMainContent" role="main">
@@ -87,7 +158,7 @@ let dataContent =
     <div class="allCharts_container">
       <div class="row g-0">
 
-    
+       
         <div role="section" class="usersCharts_container chartsSection col" aria-labelledby="userChartSectionHeader" >
           <div class="chartsSectionHeader">
             <h5 id="userChartSectionHeader" aria-label="Users"><iconify-icon inline icon="fa-solid:users" aria-hidden="true" ></iconify-icon> Users</h5>
@@ -99,9 +170,18 @@ let dataContent =
               <!-- </div> -->
             {/each}
           </div>
-  </div>
+        </div>
   
-  
+        <div class="tradesCharts_container chartsSection row g-0">
+          <div class="chartSection row g-0">
+            <div class="chartsSectionHeader">
+              <h5 id="userChartSectionHeader" aria-label="Users"><iconify-icon inline icon="fa-solid:users" aria-hidden="true" ></iconify-icon> Traders</h5>
+            </div>
+            <div id="vegaChart_traders">
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -126,15 +206,9 @@ let dataContent =
 .mainHeadingAndSearch {
   height: 256px;
   width: 100%;
-
-  padding-top: 48px;
-  padding-left: 32px;
-  padding-bottom: 48px;
-  padding-right: 32px;
  
   background-image: url("/graphics/backgroundImages/hexagon.svg");
 }
-
 .homePageMainH5 {
   padding-top: min(5%, 24%);
   
@@ -144,7 +218,7 @@ let dataContent =
 .searchInputGroup
 { max-width: 610px 
 }
-@media (max-width: 690px) {
+@media (max-width: 768px) {
   .searchFilterButton {
     display: none; 
   } 
@@ -175,5 +249,10 @@ let dataContent =
 
   /* background-color: rgba(200, 200, 255, 0.3); */
 }
+
+.tradesCharts_container {
+  margin-top: 12px;
+}
+
 
 </style>
