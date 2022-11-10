@@ -9,16 +9,24 @@
 
   let active = false;
   let activePartial = false;
+  
+  // this function is called by our navUtil in the layout code
   export let setActive = function(trueFalse, urlPathname)
       { active = trueFalse;
       }
 
+  // this function isnt used as of yet.
   export let setActivePartial = function(trueFalse, urlPathname)
       { activePartial = trueFalse;
       }
 
 
-      export let cssAdded = false;
+  // this value is used in our CSS rules to allow the developer to turn the CSS
+  //   response to being the active page on and off.
+  // you can also look at the dev-tools element browser to see the changes in the DOM in realtime when the page is changed
+  //   what is very smooth about svelte is that the pages dont actually reload. this is done very well.
+  //   its super efficient.
+  export let cssAdded = false;
 
 
       // on:click={markActiveItem}

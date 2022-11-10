@@ -7,6 +7,10 @@ import { page }           from '$app/stores';
 import RootNavItem from '$lib/Components/StatefulNavComponents/RootNavItem.svelte';
 
 
+// here we store components registered by URL
+//   which are registered here behind a Proxy object when they are placed into the DOM
+//   this means that we do not need any kind of external management structure to 
+//   maintain the state of the navigation tree, it comes directly from the HTML of the page
 let navComponentBucketsByURL_dict = {};
 let componentReferenceBindings = new Proxy( navComponentBucketsByURL_dict, 
       { set(target, prop, newValue) 
@@ -23,6 +27,7 @@ let componentReferenceBindings = new Proxy( navComponentBucketsByURL_dict,
       }
     );
 
+// make three example menu items, connected to a dynamic root in sveltekit .../page[pageNumber]
 let navTree = [];
 for (let i=0; i<3; i++)
 { navTree.push({id: i});
@@ -32,29 +37,30 @@ for (let i=0; i<3; i++)
 
 <script>
 
+// keep the previously active pathname, so we can use that to deactivate the previous nav menu items
 let previouslyActivePathname = null;
 
+// this runs every time the page URL changes
 afterNavigate 
     ( () =>
       { 
+        // the current pathname from the URL
         let pathname = $page.url.pathname;
 
+        // remove the active status from the previously active page.
+        //   we are using a try block because I couldnt get the Proxy stuff to work any other way
         try { navComponentBucketsByURL_dict[previouslyActivePathname].boundComponent.setActive(false, previouslyActivePathname);}
         catch (error) {}
+        // record the current page
         previouslyActivePathname = pathname;
 
+        // set the new active status on things
         try { navComponentBucketsByURL_dict[pathname].boundComponent.setActive(true, pathname); }
         catch (error) {}
-
-        // while (pathname !== "")
-        // { pathname = pathname.replace(/\/.*?/, "");
-
-        //   navComponentBucketsByURL_dict[pathname].boundComponent.setActivePartial(true, pathname);
-        // }
       }
     );
 
-    
+// embed a developer friendly description of what is going on inside the actual page
     let pageDescription = 
 `
 ### design
@@ -94,20 +100,29 @@ afterNavigate
 * we can add some css to this to show what is meant.
 `;
 
+// I didnt find in the short time I spent a server and client side compatible mardown renderer
+//   so I just used one from a CDN and run it only when the page is actually mounted in the client
 onMount
     ( () =>
       {
+        // markdown it
         let MarkdownIt = markdownit({linkify: true});
-
         pageDescription = MarkdownIt.render(pageDescription);
 
-        cssAdded =false;
+        // set the reactive cssAdded property to false to render the button
+        cssAdded = false;
 
       }
     );
 
+    // set the reactive cssAdded property to null so the buttons are not rendered until
+    //   the whole page is actuall mounted
     $: cssAdded =null;
-    let addCSS = () => {cssAdded = true;}
+    // these two functions (obvs they could be one function with a parameter) are used
+    //   to allow the developer to watch the effect of setting the cssAdded value to true and false
+    //   this value is passed through to the RootNavItem Component, and used to switch on the css response
+    //   to the item being the currently active item.
+    let addCSS    = () => {cssAdded = true;}
     let removeCSS = () => {cssAdded = false;}
 
 </script>
@@ -120,6 +135,10 @@ onMount
       <div id="{numberCounter.id}">{numberCounter.id}</div>
     </a>
 
+    // the cssAdded property is the last attribute defined in thie element
+    //   it is configured to be a prop in RootNavItem by `export let cssAdded = false;`
+    //   by changing it to true, the Component starts to react to CSS rules, check out the source
+    //   of the Component to see this.
     <RootNavItem bind:this={componentReferenceBindings[anchorURL]} menuItem={ {url: anchorURL, displayName: numberCounter.id} } {cssAdded}></RootNavItem>
 
   {/each}
@@ -135,7 +154,8 @@ onMount
 
 <div>cssAdded: {cssAdded}</div>
 
-<h1>Page Number:</h1> <slot></slot>
+<h1>Page Number:</h1>
+<slot></slot>
 
 <div>
 
